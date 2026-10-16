@@ -9,6 +9,11 @@ Mahnwesen – direkt in [Claude Code](https://claude.com/claude-code) oder Codex
 > **Voraussetzung:** ein SepaHeld-Konto im Tarif **Business** (enthält die KI-Integration).
 > Mehr dazu: <https://sepaheld.com/ki-integration/>
 
+> **ChatGPT, Claude (Web/Desktop/App), Grok oder Meta Muse?** Dafür brauchen Sie dieses Plugin nicht:
+> Fügen Sie SepaHeld dort als eigenen Konnektor (MCP-Server) mit der Adresse
+> `https://app.backend.sepaheld.com/api/mcp` hinzu und melden Sie sich mit Ihrem SepaHeld-Konto an.
+> Dieses Repository ist für die Programmier-Assistenten **Claude Code** und **Codex**.
+
 ## Was der Assistent kann
 
 | Sie sagen | Der Assistent |
@@ -73,6 +78,10 @@ sonst sagt der Assistent, wann es wieder geht.
 
 SEPA direct debit from your AI assistant: request mandates, collect invoices, find out why an
 invoice was not collected, handle failed payments, payouts and dunning – in Claude Code or Codex.
+
+**ChatGPT, Claude (web/desktop/app), Grok or Meta Muse?** You don't need this plugin: add SepaHeld there as
+a custom connector (MCP server) with the address `https://app.backend.sepaheld.com/api/mcp` and sign in with your
+SepaHeld account. This repository is for the coding assistants **Claude Code** and **Codex**.
 
 **Requires** a SepaHeld account on the **Business** plan (includes the AI integration).
 
