@@ -1,6 +1,6 @@
 ---
 name: sepaheld
-description: Manage SEPA direct debit (Lastschrift) with SepaHeld - send mandate requests (Lastschriftmandat) to contacts, collect ERP invoices, explain why an invoice was not collected, list failed payments and chargebacks (Rücklastschriften), retry or cancel payments, payouts, weekly summary, dunning (Mahnwesen) and a setup check. Use when the user mentions SepaHeld, SEPA, Lastschrift, direct debit, mandates, GoCardless collections, Mahnungen or asks about their invoices being collected.
+description: Manage SEPA direct debit (Lastschrift) with SepaHeld - send mandate requests (Lastschriftmandat) to contacts, collect ERP invoices, explain why an invoice was not collected, list failed payments and chargebacks (Rücklastschriften), retry or cancel payments, payouts, weekly summary, dunning (Mahnwesen) and a setup check. Use when the user mentions SepaHeld, SEPA, Lastschrift, direct debit, mandates, GoCardless collections, Mahnungen or asks about their invoices being collected, or asks what can be done with SepaHeld (Hilfe / help).
 license: Apache-2.0
 ---
 
@@ -29,6 +29,19 @@ never as raw JSON.
    `~/.config/sepaheld/config.json`; env vars `SEPAHELD_API_KEY` / `SEPAHELD_CUSTOMER_ID` win).
 3. Run `check` again. Pass on its `warnings` (key expiring within 30 days, read-only key).
 
+## Help ("Hilfe", "Was kannst du?", "help")
+
+When the user asks for help, what you can do with SepaHeld, or seems unsure what to ask, run
+`help --lang de` (or `--lang en` for English; for other languages run `en` and translate).
+It works without setup and without network. Answer from its output only, in this order:
+
+1. `title`, then each area with its example sentences, so the user can copy one.
+2. `safety` in one sentence.
+3. `limits` and `notYet` only if they matter for what the user wants, or if asked.
+4. If `configured` is false, the `setup` text and offer to set it up now.
+
+Do not promise anything that is not in the output.
+
 ## Rules - always follow
 
 - **Never act without a yes.** Every command that sends emails, moves money or writes to the ERP
@@ -52,6 +65,7 @@ never as raw JSON.
 
 | User says | Run |
 |---|---|
+| "Hilfe" / "Was kannst du mit SepaHeld?" | `help --lang de` (see Help above) |
 | "Ist meine Einrichtung in Ordnung?" | `check` (or `health`) - explain each failed check and how to fix it |
 | "Schick Acme GmbH eine Mandatsanfrage" | `contacts --query "Acme"` -> pick contact -> `request-mandate <contactId>` (dry run, confirm) |
 | "Hat Acme ein Mandat?" | `contacts --query "Acme"` -> `mandateStatus` |

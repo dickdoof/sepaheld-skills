@@ -1,6 +1,6 @@
 {
   "name": "sepaheld",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Automate SEPA direct debit (Lastschrift) with SepaHeld: send mandate requests, collect invoices, explain failed payments, payouts and dunning (Mahnwesen). Requires the SepaHeld Business plan.",
   "author": {
     "name": "d-automation GmbH",
@@ -20,6 +20,7 @@
     "category": "Finance",
     "capabilities": ["Read", "Write"],
     "defaultPrompt": [
+      "Was kannst du mit SepaHeld für mich tun?",
       "Ist meine SepaHeld-Einrichtung in Ordnung?",
       "Warum wurde Rechnung RE-2024-123 nicht eingezogen?",
       "Schick Acme GmbH eine Mandatsanfrage"

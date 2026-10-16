@@ -166,6 +166,47 @@ class CheckTest(unittest.TestCase):
         self.assertEqual(len(result["warnings"]), 2)
 
 
+class HelpTest(unittest.TestCase):
+    def run_help(self, *extra, env=None):
+        out = io.StringIO()
+        with tempfile.TemporaryDirectory() as directory, \
+                mock.patch.object(sepaheld, "CONFIG_PATH", os.path.join(directory, "missing.json")), \
+                mock.patch.dict(os.environ, env or {}, clear=True):
+            code = sepaheld.main(["help", *extra], client_factory=lambda: self.fail("help must not call the API"),
+                                 out=out)
+        return code, json.loads(out.getvalue())
+
+    def test_german_overview_without_configuration(self):
+        code, result = self.run_help()
+
+        self.assertEqual(code, 0)
+        self.assertFalse(result["configured"])
+        self.assertIn("API & Entwickler", result["setup"])
+        self.assertEqual([a["area"] for a in result["areas"]][:2], ["Einrichtung", "Mandate"])
+
+    def test_english_and_configured(self):
+        code, result = self.run_help("--lang", "en",
+                                     env={"SEPAHELD_API_KEY": "k", "SEPAHELD_CUSTOMER_ID": "c"})
+
+        self.assertEqual(code, 0)
+        self.assertTrue(result["configured"])
+        self.assertEqual(result["title"], "What I can do for you in SepaHeld")
+
+    def test_both_languages_have_the_same_shape(self):
+        de, en = sepaheld.HELP["de"], sepaheld.HELP["en"]
+        self.assertEqual(de.keys(), en.keys())
+        self.assertEqual([len(a["examples"]) for a in de["areas"]], [len(a["examples"]) for a in en["areas"]])
+        self.assertEqual(len(de["limits"]), len(en["limits"]))
+        self.assertEqual(len(de["notYet"]), len(en["notYet"]))
+
+    def test_every_area_is_covered_by_a_command(self):
+        commands = set(sepaheld.build_parser()._subparsers._group_actions[0].choices)
+        for command in ("check", "contacts", "request-mandate", "bulk-request-mandates", "remind", "diagnose",
+                        "collect", "payments", "retry", "cancel-payment", "payouts", "book-payout", "summary",
+                        "dunning", "stop-dunning", "start-dunning"):
+            self.assertIn(command, commands)
+
+
 class ConfigureTest(unittest.TestCase):
     def test_config_file_is_private(self):
         with tempfile.TemporaryDirectory() as directory:

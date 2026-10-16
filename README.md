@@ -47,7 +47,8 @@ Lese-Variante.
    Marketplace (`.agents/plugins/marketplace.json`). Fügen Sie das Repository in Codex als
    Plugin-Marketplace hinzu und installieren Sie das Plugin `sepaheld`. Alternativ kopieren Sie
    den Ordner `skills/sepaheld` in Ihr Codex-Skills-Verzeichnis.
-3. Fragen Sie z. B. „Ist meine SepaHeld-Einrichtung in Ordnung?“. Beim ersten Mal fragt der
+3. Fragen Sie „Was kannst du mit SepaHeld?“ oder einfach „Hilfe“ für eine Übersicht mit
+   Beispielsätzen, oder direkt z. B. „Ist meine SepaHeld-Einrichtung in Ordnung?“. Beim ersten Mal fragt der
    Assistent nach API-Schlüssel und Kundennummer und speichert sie in
    `~/.config/sepaheld/config.json` (nur für Sie lesbar, Rechte 600).
 
@@ -90,7 +91,8 @@ invoice was not collected, handle failed payments, payouts and dunning – in Cl
    Codex: the repository ships a Codex plugin (`.codex-plugin/plugin.json`) and a marketplace
    (`.agents/plugins/marketplace.json`); add this repository as a plugin marketplace in Codex and
    install `sepaheld`, or copy `skills/sepaheld` into your Codex skills directory.
-3. Ask e.g. "Is my SepaHeld setup OK?". The first time, the assistant asks for the API key and
+3. Ask "What can you do with SepaHeld?" (or just "help") for an overview with example
+   sentences, or e.g. "Is my SepaHeld setup OK?". The first time, the assistant asks for the API key and
    customer ID and stores them in `~/.config/sepaheld/config.json` (mode 600), or set
    `SEPAHELD_API_KEY` / `SEPAHELD_CUSTOMER_ID`.
 

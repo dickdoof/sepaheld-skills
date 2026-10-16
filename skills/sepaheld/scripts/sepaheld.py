@@ -27,7 +27,7 @@ import urllib.parse
 import urllib.request
 import uuid
 
-VERSION = "1.0.0"
+VERSION = "1.1.0"
 DEFAULT_BASE_URL = "https://app.backend.sepaheld.com/api"
 CONFIG_PATH = os.path.join(os.path.expanduser("~"), ".config", "sepaheld", "config.json")
 MAX_RETRIES = 3
@@ -163,6 +163,114 @@ class Client:
     def post(self, path, body=None, idempotency_key=None):
         return self.request("POST", path, body=body if body is not None else {},
                             idempotency_key=idempotency_key or str(uuid.uuid4()))
+
+
+# ---------------------------------------------------------------------------------------------
+# help: one fixed overview, so "Hilfe" / "Was kannst du?" gets the same answer every time
+
+
+HELP = {
+    "de": {
+        "title": "Das kann ich für Sie in SepaHeld tun",
+        "areas": [
+            {"area": "Einrichtung", "examples": [
+                "Ist meine SepaHeld-Einrichtung in Ordnung?",
+                "Wann läuft mein API-Schlüssel ab?"]},
+            {"area": "Mandate", "examples": [
+                "Hat Acme GmbH ein Mandat?",
+                "Schick Acme GmbH eine Mandatsanfrage.",
+                "Schick allen Kunden ohne Mandat eine Anfrage.",
+                "Welche Mandatsanfragen sind noch offen? Erinnere sie."]},
+            {"area": "Rechnungen", "examples": [
+                "Warum wurde Rechnung RE-2024-123 nicht eingezogen?",
+                "Zieh Rechnung RE-2024-123 jetzt ein."]},
+            {"area": "Zahlungen", "examples": [
+                "Zeig mir fehlgeschlagene Zahlungen und Rücklastschriften seit dem 1. Oktober.",
+                "Versuch die fehlgeschlagene Zahlung erneut.",
+                "Storniere die ausstehende Zahlung."]},
+            {"area": "Auszahlungen und Berichte", "examples": [
+                "Welche Auszahlungen kommen als Nächstes?",
+                "Buch die letzte Auszahlung in mein Buchhaltungssystem.",
+                "Gib mir eine Wochenübersicht."]},
+            {"area": "Mahnwesen", "examples": [
+                "Welche Mahnläufe laufen gerade?",
+                "Stopp die Mahnung für Acme GmbH, sie haben überwiesen.",
+                "Starte eine Mahnung für die fehlgeschlagene Zahlung."]},
+        ],
+        "safety": "Alles, was E-Mails verschickt, Geld bewegt oder ins Buchhaltungssystem schreibt, zeige ich "
+                  "zuerst als Vorschau. Ich führe es erst nach Ihrem ausdrücklichen Ja aus.",
+        "limits": [
+            "Mandatsanfragen an alle: höchstens 50 pro Durchlauf.",
+            "Erinnerung an eine offene Mandatsanfrage: höchstens alle 72 Stunden.",
+            "Einzüge und erneute Versuche: höchstens einer alle 10 Sekunden und 30 pro Tag.",
+            "E-Mails (Mandatsanfragen, Erinnerungen): höchstens eine alle 5 Sekunden und 100 pro Tag.",
+            "Insgesamt: 30 Anfragen pro Minute und 1.000 pro Tag.",
+        ],
+        "notYet": [
+            "Alle offenen Rechnungen eines Kunden auf einmal einziehen (bitte die Rechnungsnummern nennen).",
+            "Berichte für einen Kalendermonat (die Übersicht gilt für die letzten 1 bis 90 Tage).",
+            "Einstellungen, Tarif oder Verbindungen ändern (das geht nur in der SepaHeld-App).",
+        ],
+        "setup": "Sie brauchen den Tarif Business. API-Schlüssel und Kundennummer finden Sie in SepaHeld unter "
+                 "Einstellungen > API & Entwickler (Karte \"KI-Integration\").",
+    },
+    "en": {
+        "title": "What I can do for you in SepaHeld",
+        "areas": [
+            {"area": "Setup", "examples": [
+                "Is my SepaHeld setup OK?",
+                "When does my API key expire?"]},
+            {"area": "Mandates", "examples": [
+                "Does Acme GmbH have a mandate?",
+                "Send Acme GmbH a mandate request.",
+                "Send a mandate request to all customers without a mandate.",
+                "Which mandate requests are still open? Remind them."]},
+            {"area": "Invoices", "examples": [
+                "Why wasn't invoice RE-2024-123 collected?",
+                "Collect invoice RE-2024-123 now."]},
+            {"area": "Payments", "examples": [
+                "Show me failed payments and chargebacks since 1 October.",
+                "Retry the failed payment.",
+                "Cancel the pending payment."]},
+            {"area": "Payouts and reports", "examples": [
+                "Which payouts are coming next?",
+                "Book the last payout into my accounting system.",
+                "Give me a weekly summary."]},
+            {"area": "Dunning", "examples": [
+                "Which dunning processes are running?",
+                "Stop dunning for Acme GmbH, they paid by bank transfer.",
+                "Start dunning for the failed payment."]},
+        ],
+        "safety": "Anything that sends emails, moves money or writes to your accounting system is shown to you "
+                  "as a preview first. I only do it after your explicit yes.",
+        "limits": [
+            "Mandate requests to everyone: at most 50 per run.",
+            "Reminder for an open mandate request: at most every 72 hours.",
+            "Collections and retries: at most one every 10 seconds and 30 per day.",
+            "Emails (mandate requests, reminders): at most one every 5 seconds and 100 per day.",
+            "Overall: 30 requests per minute and 1,000 per day.",
+        ],
+        "notYet": [
+            "Collecting all open invoices of one customer at once (please name the invoice numbers).",
+            "Reports for a calendar month (the summary covers the last 1 to 90 days).",
+            "Changing settings, plan or connections (only in the SepaHeld app).",
+        ],
+        "setup": "You need the Business plan. Your API key and customer ID are in SepaHeld under "
+                 "Einstellungen > API & Entwickler (Settings > API & developers, \"KI-Integration\" card).",
+    },
+}
+
+
+def cmd_help(args, _client_factory):
+    """Works without configuration and without network."""
+    try:
+        config = load_config()
+        configured = bool(config.get("api_key") and config.get("customer_id"))
+    except ApiError:
+        configured = False
+    return EXIT_OK, {**HELP[args.lang], "configured": configured,
+                     "next": "Run `check` to verify the setup." if configured
+                     else "Not configured yet: ask the user for API key and customer ID, then run `configure`."}
 
 
 # ---------------------------------------------------------------------------------------------
@@ -369,6 +477,9 @@ def build_parser():
     sub.add_argument("--api-key")
     sub.add_argument("--customer-id")
     sub.add_argument("--base-url")
+
+    sub = add("help", cmd_help, "overview for the user: what the assistant can do, safety, limits")
+    sub.add_argument("--lang", choices=sorted(HELP), default="de")
 
     add("check", cmd_check, "verify the setup: key scope and expiry, connections")
     add("health", cmd_health, "is the SepaHeld setup OK?")

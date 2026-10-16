@@ -2,7 +2,7 @@
   "name": "sepaheld",
   "displayName": "SepaHeld – SEPA-Lastschrift / Direct Debit",
   "description": "Automate SEPA direct debit (Lastschrift) with SepaHeld: send mandate requests, collect invoices, explain failed payments, payouts and dunning (Mahnwesen). Requires the SepaHeld Business plan.",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": {
     "name": "d-automation GmbH",
     "email": "support@sepaheld.com",
