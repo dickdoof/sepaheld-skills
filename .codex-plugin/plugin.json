@@ -1,0 +1,30 @@
+{
+  "name": "sepaheld",
+  "version": "1.0.0",
+  "description": "Automate SEPA direct debit (Lastschrift) with SepaHeld: send mandate requests, collect invoices, explain failed payments, payouts and dunning (Mahnwesen). Requires the SepaHeld Business plan.",
+  "author": {
+    "name": "d-automation GmbH",
+    "email": "support@sepaheld.com",
+    "url": "https://sepaheld.com"
+  },
+  "homepage": "https://sepaheld.com",
+  "repository": "https://github.com/dickdoof/sepaheld-skills",
+  "license": "Apache-2.0",
+  "keywords": ["sepa", "lastschrift", "direct-debit", "mandate", "mahnwesen", "dunning", "gocardless", "invoices"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "SepaHeld",
+    "shortDescription": "SEPA-Lastschrift from your assistant",
+    "longDescription": "Send SEPA mandate requests, collect ERP invoices, find out why an invoice was not collected, handle failed payments and chargebacks, book payouts and manage dunning (Mahnwesen) in SepaHeld. Works with Lexware Office, sevDesk, Moco, Xentral, Invoiz, WISO MeinBüro and Papierkram. Requires the SepaHeld Business plan.",
+    "developerName": "d-automation GmbH",
+    "category": "Finance",
+    "capabilities": ["Read", "Write"],
+    "defaultPrompt": [
+      "Ist meine SepaHeld-Einrichtung in Ordnung?",
+      "Warum wurde Rechnung RE-2024-123 nicht eingezogen?",
+      "Schick Acme GmbH eine Mandatsanfrage"
+    ],
+    "websiteURL": "https://sepaheld.com",
+    "supportURL": "https://sepaheld.com"
+  }
+}

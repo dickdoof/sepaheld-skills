@@ -1,0 +1,18 @@
+{
+  "name": "sepaheld",
+  "description": "SepaHeld plugins for Claude Code: SEPA direct debit (Lastschrift) from your AI assistant.",
+  "owner": {
+    "name": "d-automation GmbH",
+    "email": "support@sepaheld.com",
+    "url": "https://sepaheld.com"
+  },
+  "plugins": [
+    {
+      "name": "sepaheld",
+      "source": "./",
+      "description": "SEPA-Lastschrift / direct debit with SepaHeld: mandate requests, invoice collection, failed payments, payouts, dunning.",
+      "category": "Finance",
+      "tags": ["sepa", "lastschrift", "direct-debit", "mahnwesen", "dunning", "gocardless"]
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "name": "sepaheld",
+  "interface": {
+    "displayName": "SepaHeld"
+  },
+  "plugins": [
+    {
+      "name": "sepaheld",
+      "source": {
+        "source": "local",
+        "path": "./"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL",
+        "products": ["CODEX"]
+      },
+      "category": "Finance"
+    }
+  ]
+}

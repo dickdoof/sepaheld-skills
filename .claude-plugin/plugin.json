@@ -1,0 +1,33 @@
+{
+  "name": "sepaheld",
+  "displayName": "SepaHeld – SEPA-Lastschrift / Direct Debit",
+  "description": "Automate SEPA direct debit (Lastschrift) with SepaHeld: send mandate requests, collect invoices, explain failed payments, payouts and dunning (Mahnwesen). Requires the SepaHeld Business plan.",
+  "version": "1.0.0",
+  "author": {
+    "name": "d-automation GmbH",
+    "email": "support@sepaheld.com",
+    "url": "https://sepaheld.com"
+  },
+  "homepage": "https://sepaheld.com",
+  "repository": "https://github.com/dickdoof/sepaheld-skills",
+  "license": "Apache-2.0",
+  "keywords": [
+    "sepa",
+    "lastschrift",
+    "sepa-lastschrift",
+    "direct-debit",
+    "lastschriftmandat",
+    "mandate",
+    "mahnwesen",
+    "dunning",
+    "invoices",
+    "rechnungen",
+    "payouts",
+    "gocardless",
+    "lexware-office",
+    "sevdesk",
+    "moco",
+    "xentral",
+    "papierkram"
+  ]
+}
